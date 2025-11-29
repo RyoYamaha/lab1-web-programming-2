@@ -6,7 +6,8 @@ import 'vue-flash-message/dist/vue-flash-message.min.css';
 Vue.use(VueFlashMessage);
 
 // 1. SỬA BASE URL: Bỏ chữ 'words/' đi, chỉ để về gốc server
-const baseURL = 'http://localhost:3000/'; 
+// Nhớ phải có https:// và dấu / ở cuối cùng nhé
+const baseURL = 'https://vocab-api-tc09.onrender.com/';
 
 // Tự động thêm Token vào mọi yêu cầu gửi đi
 axios.interceptors.request.use(
