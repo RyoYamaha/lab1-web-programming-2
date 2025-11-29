@@ -1,32 +1,45 @@
-const express = require('express'); //lấy bố thư viện express và gán vào chương trình 
-//express là bộ công cụ tạo server, nhận request và trả response 
-//const tạo biến không đổi 
-//express là tên biến để lưu công cụ Express
-const cors = require('cors'); //áp dụng bộ thư viện cors vào chương trình 
+const express = require('express');
+const cors = require('cors');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser'); // Có thể giữ hoặc bỏ (vì đã có express.json)
 
-const mongoose = require('mongoose'); //áp dụng thư viện mongoose vào (kết nối dữ liệu)  //tôi thấy file vocab gọi rồi thì ở đây cần cái này làm gì, tôi xóa đi được không ?
-const bodyParser = require('body-parser');// không hiểu đóng vai trò gì trong đấy nếu thiếu nó sẽ điều gì xẩy ra
-global.Vocab = require ('./server/api/models/vocabModel') //có phải đây là bước phân luồng nếu có yêu cầu được gửi đến 
-const routes = require('./server/api/routes/vocabRoutes') // có phải đây là bước phân luồng nếu có yêu cầu được gửi đến 
+// 1. NẠP MODELS (Khuôn mẫu dữ liệu)
+// Bắt buộc phải nạp cả Vocab và User thì mới chạy được
+global.Vocab = require('./server/api/models/vocabModel');
+const User = require('./server/api/models/userModel'); // <--- BẠN ĐANG THIẾU DÒNG NÀY (QUAN TRỌNG ĐỂ LOGIN)
+
+// 2. NẠP ROUTES (Đường dẫn)
+const routes = require('./server/api/routes/vocabRoutes');
 const authRoutes = require('./server/api/routes/authRoutes');
-mongoose.set('strictQuery', true); //thắt chặt dữ liệu đảm bảo dữ liệu nhận về sẽ được chính xác (lấy dữ liệu từ đâu)
-mongoose.connect('mongodb://localhost/vocab-builder'); //kết nối với toàn bộ file? 
 
-const port = process.env.PORT || 3000; //set up cổng 3000 là cổng chạy sever
-const app =  express();  //đây là bộ công cụ giúp ta có thể sử dụng crud và nhiều thứ khác nhau
+// 3. KẾT NỐI DATABASE (Sửa để chạy được cả trên Render)
+mongoose.set('strictQuery', true);
 
-//nó có được trích xuất từ bộ thư viện express không hay đây là 1 câu lệnh hoàn toàn riêng biệt
+// Dòng này cực quan trọng: Nó bảo Server ưu tiên dùng link MongoDB Atlas trên Render (biến môi trường),
+// nếu không có thì mới dùng localhost.
+const dbLink = process.env.MONGODB_URI || 'mongodb://localhost/vocab-builder';
 
-app.use(cors()); //sử dụng cors,(được định nghĩa ở trên) để nhận lệnh từ file khác
-app.use(express.json()); //chuyển đổi dữ liệu nhận từ front-end sang json để backend có thể xử lý
+mongoose.connect(dbLink)
+  .then(() => console.log('Connected to MongoDB Successfully'))
+  .catch(err => console.error('Could not connect to MongoDB', err));
 
+// 4. CẤU HÌNH SERVER
+const port = process.env.PORT || 3000;
+const app = express();
 
+app.use(cors());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
-routes(app); //gửi app được định nghĩa bởi bộ cônng cụ express ở trên
+// 5. KÍCH HOẠT ROUTES
+routes(app);
 authRoutes(app);
-app.listen(port);  //chạy cái cổng đấy (ok biết là chạy nhưng nếu không có thì sever sập à)
-app.use((req,res) => {
-    res.status(404).send({url: `$(req.originalUrl) not found`});
+
+// 6. XỬ LÝ LỖI 404 & KHỞI ĐỘNG
+app.listen(port, () => {
+  console.log(`Server started on port ${port}`);
 });
 
-console.log(`Sever started on port ${port}`); //in trongt terminator
+app.use((req, res) => {
+  res.status(404).send({ url: `${req.originalUrl} not found` });
+});
