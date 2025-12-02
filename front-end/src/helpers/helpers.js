@@ -6,6 +6,7 @@ import 'vue-flash-message/dist/vue-flash-message.min.css';
 Vue.use(VueFlashMessage);
 
 // 1. SỬA BASE URL: Bỏ chữ 'words/' đi, chỉ để về gốc server
+
 // Nhớ phải có https:// và dấu / ở cuối cùng nhé
 const baseURL = 'https://vocab-api-tc09.onrender.com/';
 
@@ -27,16 +28,16 @@ const handleError = fn => (...params) =>
   });
 
 export const api = {
-  // --- CÁC HÀM VỀ TỪ VỰNG (Phải thêm chữ 'words' vào đường dẫn) ---
+
   
   getWord: handleError(async id => {
-    // baseURL + 'words/' + id
+
     const res = await axios.get(baseURL + 'words/' + id);
     return res.data;
   }),
   
   getWords: handleError(async () => {
-    // baseURL + 'words'
+
     const res = await axios.get(baseURL + 'words');
     return res.data;
   }),
@@ -55,15 +56,6 @@ export const api = {
     const res = await axios.put(baseURL + 'words/' + payload._id, payload);
     return res.data;
   }),
-  
-  searchWord: handleError(async query => {
-    // baseURL + 'words/search'
-    const res = await axios.get(`${baseURL}words/search?q=${encodeURIComponent(query)}`);
-    return res.data;
-  }),
-
-  // --- CÁC HÀM VỀ AUTH (Giữ nguyên, giờ sẽ chạy đúng) ---
-  // Kết quả sẽ là: http://localhost:3000/auth/register -> CHUẨN
   register: (userInfo) => {
     return axios.post(baseURL + 'auth/register', userInfo).then(res => res.data);
   },

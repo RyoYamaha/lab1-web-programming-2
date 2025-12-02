@@ -125,7 +125,7 @@ export default {
     },
 
     submitAnswer() {
-      // 3. Kiểm tra đáp án
+
       const current = this.currentWord;
       let correctAnswer = '';
 
@@ -135,7 +135,7 @@ export default {
         correctAnswer = current.german;
       }
 
-      // So sánh (chuyển về chữ thường, bỏ khoảng trắng thừa)
+
       if (this.userAnswer.trim().toLowerCase() === correctAnswer.toLowerCase()) {
         this.score++;
         this.message = 'Correct! 🎉';
@@ -145,7 +145,7 @@ export default {
         this.messageClass = 'error';
       }
 
-      // Đợi 1-2 giây rồi chuyển câu
+
       setTimeout(() => {
         this.nextQuestion();
       }, 1500);

@@ -31,9 +31,9 @@ export default { //export toàn bộ những dòng ở dưới vào default
             word: {} //khai báo giá trị word là rỗng
         };
     },
-    async mounted(){ //ban đầu khi chạy vòng for sẽ không có dữ liệu gì, 
-        // sau khi chạy lại lần nữa thì lập tức mounted chạy và gửi dữ liệu ở dưới vào  
-        this.word = await api.getWord(this.$route.params.id); //lấy word theo id của đường dẫn 
+    async mounted(){  
+     
+        this.word = await api.getWord(this.$route.params.id); 
     }
 };
 </script>

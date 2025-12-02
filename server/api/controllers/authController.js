@@ -1,22 +1,21 @@
 const mongoose = require('mongoose');
-const User = require('../models/userModel'); // Import Model vừa tạo
+const User = require('../models/userModel'); 
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 // Đăng ký
 exports.register = async (req, res) => {
   try {
-    // 1. Mã hóa mật khẩu
+
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
     
-    // 2. Tạo user mới
+
     const newUser = new User({
       name: req.body.name,
       email: req.body.email,
       password: hashedPassword
     });
 
-    // 3. Lưu vào DB
     const user = await newUser.save();
     res.json(user);
   } catch (err) {

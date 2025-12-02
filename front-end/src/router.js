@@ -94,17 +94,17 @@ const router = new Router({
   ]
 });
 
-// --- BÁC BẢO VỆ (Logic chặn người lạ) ---
+
 router.beforeEach((to, from, next) => {
-  // 1. Kiểm tra xem trong túi (localStorage) có vé (token) chưa?
+
   const loggedIn = localStorage.getItem('token');
 
-  // 2. Nếu nơi muốn đến (to) có biển cấm (requiresAuth) VÀ chưa có vé (!loggedIn)
+
   if (to.matched.some(record => record.meta.requiresAuth) && !loggedIn) {
-    // 3. Đá về trang Login
+
     next('/login');
   } else {
-    // 4. Cho qua
+
     next();
   }
 });

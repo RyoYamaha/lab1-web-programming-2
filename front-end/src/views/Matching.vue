@@ -85,7 +85,7 @@ export default {
       isFinished: false,
       
       matchesFound: 0,
-      totalPairs: 0,     // Tổng số cặp cần tìm (sẽ thay đổi tùy số lượng từ)
+      totalPairs: 0,     
       score: 0,
       timer: 0,
       timerInterval: null
@@ -96,20 +96,19 @@ export default {
   },
   methods: {
     startGame() {
-      // 1. Kiểm tra: Nếu chưa có từ nào thì báo lỗi
+
       if (this.allWords.length === 0) {
         alert("Your vocabulary list is empty! Please add some words first.");
         return;
       }
 
-      // 2. LOGIC MỚI: Tự động tính số lượng cặp từ để chơi
-      // Lấy tối đa 10 từ, hoặc lấy hết nếu có ít hơn 10
+
       const maxLimit = 10; 
       const playCount = Math.min(this.allWords.length, maxLimit);
       
-      this.totalPairs = playCount; // Cập nhật tổng số cặp
+      this.totalPairs = playCount; 
 
-      // 3. Reset các biến
+    
       this.matchesFound = 0;
       this.score = 0;
       this.timer = 0;
@@ -118,18 +117,18 @@ export default {
       this.isPlaying = true;
       this.isFinished = false;
 
-      // 4. Lấy ngẫu nhiên 'playCount' từ
+     
       const shuffled = [...this.allWords].sort(() => 0.5 - Math.random());
       const gameWords = shuffled.slice(0, playCount);
 
-      // 5. Tạo cột trái (Giữ nguyên thứ tự sau khi cắt)
+    
       this.leftItems = gameWords.map(w => ({
         id: w._id,
         german: w.german,
-        status: 'default' // default, selected, matched, wrong
+        status: 'default'
       }));
 
-      // 6. Tạo cột phải (Trộn lại vị trí)
+
       const shuffledEnglish = [...gameWords].sort(() => 0.5 - Math.random());
       this.rightItems = shuffledEnglish.map(w => ({
         id: w._id,
@@ -137,7 +136,7 @@ export default {
         status: 'default'
       }));
 
-      // 7. Bắt đầu đếm giờ
+
       this.startTimer();
     },
 
@@ -155,7 +154,7 @@ export default {
     selectCard(item, side) {
       if (item.status === 'matched') return;
 
-      // Xử lý chọn bên Trái
+
       if (side === 'left') {
         if (this.selectedLeft && this.selectedLeft.id === item.id) {
           this.selectedLeft = null;
@@ -167,7 +166,7 @@ export default {
         }
       }
       
-      // Xử lý chọn bên Phải
+
       if (side === 'right') {
         if (this.selectedRight && this.selectedRight.id === item.id) {
           this.selectedRight = null;
@@ -179,7 +178,7 @@ export default {
         }
       }
 
-      // Kiểm tra ghép đôi
+
       if (this.selectedLeft && this.selectedRight) {
         this.checkMatch();
       }
@@ -190,7 +189,7 @@ export default {
       const right = this.selectedRight;
 
       if (left.id === right.id) {
-        // --- ĐÚNG ---
+
         left.status = 'matched';
         right.status = 'matched';
         this.score += 10;
@@ -208,7 +207,7 @@ export default {
         }
 
       } else {
-        // --- SAI ---
+
         left.status = 'wrong';
         right.status = 'wrong';
         
@@ -242,7 +241,7 @@ export default {
   font-family: 'Arial', sans-serif;
 }
 
-/* START CARD */
+
 .card {
   background: white;
   padding: 2rem;
@@ -271,7 +270,7 @@ export default {
   background: #2563eb;
 }
 
-/* STATS BAR */
+
 .stats-bar {
   display: flex;
   justify-content: center;
@@ -290,7 +289,7 @@ export default {
   gap: 8px;
 }
 
-/* GAME BOARD */
+
 .game-board {
   display: flex;
   gap: 20px;
@@ -308,7 +307,7 @@ export default {
   padding-left: 5px;
 }
 
-/* WORD CARD STYLE */
+
 .word-card {
   background: white;
   border: 1px solid #e5e7eb;
@@ -319,14 +318,14 @@ export default {
   font-size: 1rem;
   text-align: left;
   color: #333;
-  user-select: none; /* Chặn bôi đen text khi click nhanh */
+  user-select: none; 
 }
 .word-card:hover {
   background-color: #f9fafb;
   border-color: #ccc;
 }
 
-/* COLORS */
+
 .word-card.selected {
   background-color: #e0f2fe;
   border-color: #3b82f6;

@@ -46,7 +46,7 @@ export default { //export toàn bộ dòng dưới vào default
         this.words = newWords;
     }
   },
-  async mounted() { //mounted bảo đừng duyệt vội, đợi cho api lấy dữ liệu đã
+  async mounted() { 
     this.words = await api.getWords(); 
     //await bảo chờ lấy dữ liệu, nếu chạy luôn thì sẽ không có dữ liệu 
     //gán dữ liệu được gọi về vào words

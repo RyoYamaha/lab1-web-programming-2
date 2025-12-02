@@ -83,15 +83,15 @@ export default {
   name: 'Quiz',
   data() {
     return {
-      words: [],            // Tất cả từ trong DB
-      questions: [],        // Danh sách câu hỏi đã lọc
-      currentOptions: [],   // 4 đáp án cho câu hiện tại
+      words: [],          
+      questions: [],      
+      currentOptions: [],   
       isPlaying: false,
       isFinished: false,
       currentIndex: 0,
       score: 0,
-      selectedOption: null, // Đáp án người dùng vừa chọn (để hiện màu xanh/đỏ)
-      canClick: true,       // Chặn click nhiều lần
+      selectedOption: null, 
+      canClick: true,      
       
       settings: {
         direction: 'ger-eng',
@@ -113,17 +113,16 @@ export default {
         alert("Need at least 4 words to start a quiz!");
         return;
       }
-      // 1. Trộn và lấy n câu hỏi
+
       const shuffled = [...this.words].sort(() => 0.5 - Math.random());
       this.questions = shuffled.slice(0, this.settings.limit);
       
-      // 2. Reset trạng thái
+
       this.currentIndex = 0;
       this.score = 0;
       this.isPlaying = true;
       this.isFinished = false;
-      
-      // 3. Tạo đáp án cho câu đầu tiên
+
       this.generateOptions();
     },
 
@@ -133,13 +132,13 @@ export default {
 
       const correctWord = this.currentWord;
       
-      // Lấy ra danh sách các từ KHÔNG PHẢI từ đúng (để làm đáp án sai)
+
       const otherWords = this.words.filter(w => w._id !== correctWord._id);
       
-      // Trộn và lấy 3 từ sai
+
       const distractors = otherWords.sort(() => 0.5 - Math.random()).slice(0, 3);
       
-      // Gộp 1 đúng + 3 sai và trộn vị trí lại
+
       const options = [correctWord, ...distractors];
       this.currentOptions = options.sort(() => 0.5 - Math.random());
     },
@@ -153,16 +152,16 @@ export default {
     },
 
     selectAnswer(option) {
-      if (!this.canClick) return; // Chặn click liên tục
+      if (!this.canClick) return;
       this.canClick = false;
       this.selectedOption = option;
 
-      // Kiểm tra đúng sai
+
       if (option._id === this.currentWord._id) {
         this.score++;
       }
 
-      // Đợi 1 giây để người dùng xem kết quả rồi chuyển câu
+  
       setTimeout(() => {
         this.nextQuestion();
       }, 1000);
@@ -178,20 +177,20 @@ export default {
       }
     },
 
-    // Hàm tạo class CSS màu xanh/đỏ cho nút bấm
+
     getOptionClass(option) {
-      if (!this.selectedOption) return ''; // Chưa chọn thì không màu
+      if (!this.selectedOption) return ''; 
       
-      // Nếu là đáp án đúng -> Luôn hiện màu XANH
+  
       if (option._id === this.currentWord._id) {
         return 'correct';
       }
       
-      // Nếu là đáp án mình chọn mà bị sai -> hiện màu ĐỎ
+
       if (this.selectedOption._id === option._id) {
         return 'wrong';
       }
-      return 'disabled'; // Các nút còn lại làm mờ đi
+      return 'disabled'; 
     },
 
     resetQuiz() {
@@ -229,13 +228,13 @@ export default {
   transition: all 0.2s;
 }
 .buttons button.active {
-  background: #3b82f6; /* Màu xanh dương giống ảnh */
+  background: #3b82f6;
   color: white;
   border-color: #3b82f6;
   font-weight: bold;
 }
 .btn-start {
-  background: #10b981; /* Màu xanh lá Start */
+  background: #10b981; 
   color: white;
   border: none;
   padding: 12px 30px;
@@ -245,7 +244,7 @@ export default {
   cursor: pointer;
 }
 
-/* QUESTION CARD */
+
 .progress-pill {
   background: #f3f4f6;
   display: inline-block;
@@ -271,7 +270,7 @@ export default {
   margin-bottom: 25px;
 }
 
-/* OPTIONS GRID */
+
 .options-grid {
   display: flex;
   flex-direction: column;
