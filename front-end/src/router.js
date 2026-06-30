@@ -1,0 +1,99 @@
+import Vue from 'vue';
+import Router from 'vue-router';
+import Words from './views/Words.vue';
+import New from './views/New.vue';
+import Show from './views/Show.vue';
+import Edit from './views/Edit.vue';
+import Test from './views/Test.vue';
+import Search from './views/Search.vue';
+import Flashcards from './views/Flashcards.vue';
+import Login from './views/Login.vue';
+import Register from './views/Register.vue';
+
+Vue.use(Router);
+
+const router = new Router({
+  mode: 'history',
+  base: process.env.BASE_URL,
+  linkActiveClass: 'active',
+  routes: [
+    {
+      path: '/',
+      redirect: '/words'
+    },
+    // --- KHU VỰC CÔNG CỘNG (Ai vào cũng được) ---
+    {
+      path: '/login',
+      name: 'login',
+      component: Login
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: Register
+    },
+    
+    // --- KHU VỰC BẢO MẬT (Phải có Token mới được vào) ---
+    // Thêm dòng meta: { requiresAuth: true } vào các trang này
+    {
+      path: '/words',
+      name: 'words',
+      component: Words,
+      meta: { requiresAuth: true } 
+    },
+    {
+      path: '/words/new',
+      name: 'new-word',
+      component: New,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/words/search',
+      name: 'search-word',
+      component: Search,
+      meta: { requiresAuth: true }
+    },
+
+    {
+      path: '/test',
+      name: 'test',
+      component: Test,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/flashcards',
+      name: 'flashcards',
+      component: Flashcards,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/words/:id/edit',
+      name: 'edit',
+      component: Edit,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/words/:id',
+      name: 'show',
+      component: Show,
+      meta: { requiresAuth: true }
+    }
+  ]
+});
+
+
+router.beforeEach((to, from, next) => {
+
+  const loggedIn = localStorage.getItem('token');
+
+
+  if (to.matched.some(record => record.meta.requiresAuth) && !loggedIn) {
+
+    next('/login');
+  } else {
+
+    next();
+  }
+});
+
+export default router;
