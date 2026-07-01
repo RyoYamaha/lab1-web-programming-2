@@ -1,113 +1,127 @@
-#Vocabulary Management Web App
-##Overview
+🚀 Vocabulary Management Web App (MEVN Stack)
 
-This is a full-stack vocabulary management web application built using Vue.js (frontend), Node.js/Express (backend), and MongoDB (Mongoose) as the database.
+A full-stack vocabulary management system built with Vue.js (frontend), Node.js/Express (backend), and MongoDB (database).
 
-The system allows users to register, log in, and perform full CRUD operations on vocabulary items.
+The application supports user authentication (JWT) and full CRUD operations for vocabulary learning, with user-specific data isolation.
 
-#Architecture
-##Frontend (Vue.js)
-Framework: Vue.js 2.6
-Router: Vue Router
-State management: Local component state (no Vuex/Pinia)
-HTTP client: Axios
-UI libraries: Semantic UI, jQuery
-##Project Structure
+✨ Key Features
+🔐 Authentication System
+User registration and login
+Secure password hashing using bcryptjs
+JWT-based authentication
+Token stored in localStorage
+Axios interceptor for automatic token injection
+📚 Vocabulary Management (CRUD)
+Create new vocabulary entries
+View vocabulary list
+Update existing words
+Delete vocabulary items
+Search vocabulary efficiently
+👤 User-Specific Data
+Each user has isolated vocabulary data
+Secure API access via JWT middleware
+🧠 Architecture Overview
+
+This project follows a classic MEVN architecture:
+
+Vue.js (Frontend)
+   ↓ Axios (HTTP)
+Node.js / Express (Backend API)
+   ↓ Mongoose
+MongoDB (Database)
+🎨 Frontend (Vue.js)
+⚙️ Tech Stack
+Vue.js 2.6
+Vue Router
+Axios
+Semantic UI
+jQuery (UI enhancements)
+📁 Structure
 front-end/
 ├── src/
 │   ├── assets/
 │   ├── components/
 │   ├── views/
+│   ├── router.js
 │   ├── helpers.js
-│   ├── App.vue
 │   ├── main.js
-│   └── router.js
-##Key Files
-Words.vue: Vocabulary list and CRUD UI
-helpers.js: Axios instance and token handling
-router.js: Route configuration
-main.js: Application entry point
-##Backend (Node.js / Express)
-Framework: Express.js
-Database: MongoDB (Mongoose)
-Authentication: JWT + bcryptjs
-Middleware: JWT authentication middleware
-##Project Structure
+│   └── App.vue
+📌 Core Files
+Words.vue → Vocabulary list + CRUD UI
+helpers.js → Axios instance + token handling
+router.js → Route definitions
+main.js → App bootstrap
+⚙️ Backend (Node.js + Express)
+⚙️ Tech Stack
+Node.js
+Express.js
+MongoDB (Mongoose)
+JWT Authentication
+bcryptjs
+CORS
+📁 Structure
 server/
 ├── api/
 │   ├── controllers/
 │   ├── models/
-│   ├── middleware/
-│   └── routes/
+│   ├── routes/
+│   └── middleware/
 ├── server.js
 └── package.json
-##Key Components
-authController.js: Register and login logic
-vocabController.js: CRUD operations for vocabulary
-authMiddleware.js: JWT verification middleware
-userModel.js: User schema
-vocabModel.js: Vocabulary schema
-##Database Design
+📌 Core Modules
+authController.js → Register & login logic
+vocabController.js → Vocabulary CRUD logic
+authMiddleware.js → JWT verification
+userModel.js → User schema
+vocabModel.js → Vocabulary schema
+🗄️ Database Design (MongoDB)
 
 MongoDB is used with Mongoose ODM.
 
-Collections
-###User
+👤 User Collection
 email
 password (hashed)
 name
-###Vocab
+📚 Vocab Collection
 english
 german
 userId (reference to User)
-##Authentication
-Method: Email and Password
-Password hashing: bcryptjs
-Token system: JWT
-Token storage: localStorage (frontend)
-Axios interceptor automatically attaches token to requests
-##Features
-User registration and login
-JWT authentication
-Create vocabulary items
-Read vocabulary list
-Update vocabulary items
-Delete vocabulary items
-Search vocabulary
-User-specific data handling
-##API Endpoints
-###Auth
-POST /register → Register user
-POST /login → Login user
-###Vocabulary
-GET /words → Get all words
-GET /words/:id → Get word by ID
-POST /words → Create word
-PUT /words/:id → Update word
-DELETE /words/:id → Delete word
-GET /words/search → Search words
-#Tech Stack
-##Frontend
+🔐 Authentication Flow
+User registers or logs in
+Backend returns JWT token
+Frontend stores token in localStorage
+Axios interceptor attaches token to every request
+Backend verifies token via middleware
+🌐 API Endpoints
+🔐 Auth Routes
+POST /register → Register new user
+POST /login    → User login
+📚 Vocabulary Routes
+GET    /words          → Get all vocabulary
+GET    /words/:id      → Get word by ID
+POST   /words          → Create word
+PUT    /words/:id      → Update word
+DELETE /words/:id      → Delete word
+GET    /words/search   → Search vocabulary
+🧰 Tech Stack
+🎨 Frontend
 Vue.js 2
 Vue Router
 Axios
 Semantic UI
-##Backend
+⚙️ Backend
 Node.js
 Express.js
 MongoDB + Mongoose
-JWT
+JWT Authentication
 bcryptjs
 CORS
-#Setup Instructions
-###Backend
+⚙️ How to Run the Project
+🖥️ Backend Setup
 cd server
 npm install
 node server.js
-###Frontend
+🌐 Frontend Setup
 cd front-end
 npm install
 npm run serve
-#Summary
-
-This project is a MEVN-style full-stack application focused on authentication and vocabulary CRUD management, using Vue.js for frontend and Node.js/Express/MongoDB for backend.
